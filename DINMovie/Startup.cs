@@ -16,17 +16,8 @@ namespace DINMovie
         public void ConfigureServices(IServiceCollection services)
         {
             //DbContext configuration
-            services.AddDbContext<AppDbContext>(o =>
-            {
-                o.UseMySQL(Configuration.GetConnectionString("mysql"));
-            });
-
-            services.AddAuthentication("CookieAuth")
-                .AddCookie("CookieAuth", options =>
-                {
-                    options.LoginPath = "/Akun/SignIn";
-                    options.AccessDeniedPath = "/Akun/SignIn";
-                });
+            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration
+                .GetConnectionString("DefaultConnectionString")));
 
             services.AddControllersWithViews();
         }
@@ -44,6 +35,7 @@ namespace DINMovie
                 app.UseHsts();
             }
 
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
@@ -59,22 +51,8 @@ namespace DINMovie
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            /*  app.UseEndpoints(endpoints =>
-              {
-                  endpoints.MapAreaControllerRoute(
-                      name: "AreaAdmin",
-                      areaName: "Admin",
-                      pattern: "Admin/{controller=Home}/{action=Index}/{id?}"
-                      );
-                  endpoints.MapAreaControllerRoute(
-                      name: "AreaUser",
-                      areaName: "User",
-                      pattern: "User/{controller=Home}/{action=Index}/{id?}"
-                      );
-                  endpoints.MapControllerRoute(
-                      name: "default",
-                      pattern: "{controller=Home}/{action=Index}/{id?}");
-              });*/
+            //Seed Databae
+            AppDbInitializer.Seed(app);
         }
     }
 }

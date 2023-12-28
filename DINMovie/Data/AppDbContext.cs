@@ -1,5 +1,4 @@
-﻿
-using DINMovie.Models;
+﻿using DINMovie.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DINMovie.Data
@@ -18,11 +17,8 @@ namespace DINMovie.Data
                 am.MovieId
             });
 
-            modelBuilder.Entity<ActorMovie>().HasOne(m => m.Movie).WithMany(am => am.ActorMovies)
-                .HasForeignKey(m => m.MovieId);
-
-            modelBuilder.Entity<ActorMovie>().HasOne(m => m.Actor).WithMany(am => am.ActorMovies)
-                .HasForeignKey(m => m.ActorId);
+            modelBuilder.Entity<ActorMovie>().HasOne(m => m.Movie).WithMany(am => am.ActorMovies).HasForeignKey(m => m.MovieId);
+            modelBuilder.Entity<ActorMovie>().HasOne(m => m.Actor).WithMany(am => am.ActorMovies).HasForeignKey(m => m.ActorId);
 
             base.OnModelCreating(modelBuilder);
         }
@@ -31,6 +27,6 @@ namespace DINMovie.Data
         public DbSet<Movie> Movies { get; set; }
         public DbSet<ActorMovie> ActorMovies { get; set; }
         public DbSet<Cinema> Cinemas { get; set; }
-        public DbSet<Producer> Producers { get; set; }
+        public DbSet<Producer> Producer { get; set; }
     }
 }

@@ -6,8 +6,11 @@ namespace DINMovie.Models
     {
         [Key]
         public int Id { get; set; }
-        public string ProfilPictureUrl { get; set; }
+        [Display(Name = "Profile Picture URL")]
+        public string ProfilPictureURL { get; set; }
+        [Display(Name = "FullName")]
         public string FullName { get; set; }
+        [Display(Name = "Biography")]
         public string Bio { get; set; }
 
         //Relationship
