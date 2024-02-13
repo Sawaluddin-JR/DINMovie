@@ -1,0 +1,85 @@
+﻿@model IEnumerable<Movie>
+@{
+    ViewData["Title"] = "List of Movies";
+}
+<style>
+    .card-movie {
+        object-fit: cover;
+        width: 100%;
+        height: 250px;
+    }
+</style>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-sm-12 mb-3">
+            <form class="d-flex" asp-controller="Movies" asp-action="Filter">
+                <input class="form-control me-2 border-2" type="search" name="searchString" placeholder="Search for a movie..." aria-label="Search">
+                <button class="btn btn-outline-secondary" type="submit"><i class="bi bi-search"></i></button>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+                <div class="card h-100 border-2">
+                    <img src="@item.ImageURL" alt="@item.Name" class="card-movie">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary d-flex align-items-center">
+                            @item.Name
+                            @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                            {
+                                <a class="ms-auto" asp-controller="Movies" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>
+                            }
+                        </h5>
+                        <p class="card-text">
+                            <strong>Start Date:</strong> @item.StartDate.ToString("dd MMM yyyy")
+                        </p>
+                        <p class="card-text">
+                            <strong>End Date:</strong> @item.EndDate.ToString("dd MMM yyyy")
+                        </p>
+                        <p class="card-text">
+                            <strong>Price:</strong> $@item.Price.ToString()
+                        </p>
+                        <p class="card-text">
+                            <strong>Status:</strong>
+                            @if (DateTime.Now >= item.StartDate && DateTime.Now <= item.EndDate)
+                            {
+                                <span class="badge bg-success">AVAILABLE</span>
+                            }
+                            else if (DateTime.Now > item.EndDate)
+                            {
+                                <span class="badge bg-danger">EXPIRED</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-primary">UPCOMING</span>
+                            }
+                        </p>
+                    </div>
+                    <div class="card-footer d-flex">
+                        <a class="btn btn-secondary" asp-controller="Movies" asp-action="Details" asp-route-id="@item.Id">
+                            <i class="bi bi-eye"></i> Show Details
+                        </a>
+                        <a class="btn btn-primary ms-auto text-white @((DateTime.Now > item.EndDate) ? "disabled" : "")"
+                           asp-controller="Orders"
+                           asp-action="AddItemToShoppingCart"
+                           asp-route-id="@item.Id">
+                            <i class="bi bi-cart-plus"></i> Add to Cart
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div style="position: fixed; bottom: 0; right: 0;" class="text-white p-2">
+    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+    {
+        <a asp-controller="Movies" asp-action="Create" class="btn btn-outline-primary rounded-full">
+            <i class="bi bi-plus-circle"></i>
+        </a>
+    }
+</div>

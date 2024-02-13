@@ -1,0 +1,62 @@
+﻿@using DINMovie.Data.ViewModels
+@model EditVM
+
+@{
+    ViewData["Title"] = "Edit User";
+}
+
+<div class="container">
+    <h1 class="text-center mt-5">Edit User</h1>
+
+    <div class="row mt-3">
+        <div class="col-md-6 offset-3">
+            <form asp-action="Edit" method="post" class="needs-validation" novalidate>
+                <input type="hidden" name="username" value="@User.Identity.Name" />
+
+                <div class="mb-3">
+                    <label for="FullName">Full Name:</label>
+                    <input asp-for="FullName" class="form-control" id="FullName" required>
+                    <div class="invalid-feedback">
+                        Please provide a valid full name.
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="EmailAddress">Email Address:</label>
+                    <input asp-for="EmailAddress" class="form-control" id="EmailAddress" required>
+                    <div class="invalid-feedback">
+                        Please provide a valid email address.
+                    </div>
+                </div>
+
+                <div class="text-center mb-3">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Add custom validation for full name
+        var fullNameInput = document.getElementById('FullName');
+        fullNameInput.addEventListener('input', function () {
+            if (fullNameInput.validity.valid) {
+                fullNameInput.classList.remove('is-invalid');
+            } else {
+                fullNameInput.classList.add('is-invalid');
+            }
+        });
+
+        // Add custom validation for email address
+        var emailInput = document.getElementById('EmailAddress');
+        emailInput.addEventListener('input', function () {
+            if (emailInput.validity.valid) {
+                emailInput.classList.remove('is-invalid');
+            } else {
+                emailInput.classList.add('is-invalid');
+            }
+        });
+    </script>
+}
