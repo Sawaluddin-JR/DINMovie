@@ -343,7 +343,7 @@ namespace DINMovie.Data
                         Email = adminUserEmail,
                         EmailConfirmed = true
                     };
-                    await userManager.CreateAsync(newAdminUser, "Admin@1234?");
+                    await userManager.CreateAsync(newAdminUser, "Admin@1234?");//Coding@123
                     await userManager.AddToRoleAsync(newAdminUser, UserRoles.Admin);
                 }
 
